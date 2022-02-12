@@ -74,9 +74,13 @@ public class EntryController {
 			
 		 	hours = hours % 12;
 		 	if (hours == 0) hours = 12;
-
-		  	minutes = minutes < 10 ? '0' + minutes : minutes;
-		  	String timeStr = hours + ":" + minutes + " " + ampm;
+		 	
+		 	String minuteStr = String.valueOf(minutes);
+		 	if (minutes < 10) {
+		 		minuteStr = "0" + minuteStr;
+		 	}
+		 	
+		  	String timeStr = hours + ":" + minuteStr + " " + ampm;
 		  	entries.get(i).setTime(timeStr);
 		}
 		model.addAttribute("entries", entries);

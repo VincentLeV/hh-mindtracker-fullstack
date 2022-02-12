@@ -42,8 +42,8 @@ public class Entry {
 		Date date,
 		String time,
 		Influencer influencer,
-		String notes,
 		String userId,
+		String notes,
 		String gratitude
 	) {
 		super();
@@ -55,6 +55,7 @@ public class Entry {
 		this.date = date;
 		this.time = time;
 		this.userId = userId;
+		this.gratitude = gratitude;
 	}
 	
 	public String getId() {
