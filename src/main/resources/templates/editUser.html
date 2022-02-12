@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://thymeleaf.org">
+<head>
+	<title>Edit User</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+</head>
+
+<body>
+	<section class="mt-4">
+		<div class="mt-2 mb-3 mx-auto w-25 text-center">
+			<a href="/"><button class="btn btn-warning btn-sm">Back</button></a>
+		</div>
+
+		<h2 class="text-center mb-4">Edit User</h2>
+		
+		<form th:object="${user}" th:action="@{../../saveedituser}" action="#" method="post" class="px-5">
+			<input type="hidden" th:field="*{id}" />
+			<input type="hidden" th:field="*{passwordHash}" />
+			
+			<div class="mb-2 mx-auto w-50">
+		  		<label for="fullname" class="form-label mx-auto">Full Name</label>
+				<input type="text" id="fullname" th:field="*{fullname}" class="form-control" />
+		  	</div>
+		  	
+		  	<div class="mb-2 mx-auto w-50">
+		  		<label for="username" class="form-label mx-auto">Username</label>
+				<input type="text" id="username" th:field="*{username}" class="form-control" />
+		  	</div>
+		  	
+		  	<div class="mb-2 mx-auto w-50">
+		  		<label for="role" class="form-label mx-auto">Role</label>
+				<input type="text" id="role" th:field="*{role}" class="form-control" />
+		  	</div>
+			
+			<div class="my-3 w-50 d-grid gap-2 mx-auto">
+				<input type="submit" value="Edit" class="btn btn-success"></input>
+			</div>
+		</form>
+	</section>
+</body>
+</html>

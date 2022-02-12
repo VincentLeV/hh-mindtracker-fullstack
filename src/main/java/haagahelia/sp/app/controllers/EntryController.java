@@ -3,15 +3,20 @@ package haagahelia.sp.app.controllers;
 import java.util.Collections;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import haagahelia.sp.app.domain.AddEntryForm;
 import haagahelia.sp.app.domain.Entry;
 import haagahelia.sp.app.domain.EntryRepository;
 import haagahelia.sp.app.domain.InfluencerRepository;
@@ -35,12 +40,6 @@ public class EntryController {
     public String login() {	
         return "login";
     }
-	
-//	@RequestMapping(value="/api/entries", method=RequestMethod.GET, produces="application/json")
-//	@ResponseBody
-//	public List<Entry> getEntries() {
-//	    return (List<Entry>) repository.findAll();
-//	}
 	
 	@RequestMapping(value= {"/", "/entries"}, method=RequestMethod.GET)
 	public String entries(Model model) {
@@ -72,8 +71,11 @@ public class EntryController {
 			} else {
 				ampm = "AM";
 			}
+			
 		 	hours = hours % 12;
-		  	minutes = minutes < 10 ? '0'+ minutes : minutes;
+		 	if (hours == 0) hours = 12;
+
+		  	minutes = minutes < 10 ? '0' + minutes : minutes;
 		  	String timeStr = hours + ":" + minutes + " " + ampm;
 		  	entries.get(i).setTime(timeStr);
 		}
@@ -82,52 +84,70 @@ public class EntryController {
 		return "entries";
 	}
 	
-//	@RequestMapping(value="/entries", method = RequestMethod.GET)
-//    public @ResponseBody List<Entry> entriesRest() {	
-//        return (List<Entry>) repository.findAll();
-//    }  
-		
-//	@RequestMapping(value="/entries", method = RequestMethod.POST)
-//	public String addEntry(@RequestBody Entry entry) {
-//		repository.save(entry);
-//		return "Added entry	with headline: " + entry.getHeadline();
-//	}
-	
 	@RequestMapping(value = "/add")
     public String addEntry(Model model) {
-    	model.addAttribute("entry", new Entry());
+//    	model.addAttribute("entry", new Entry());
+		model.addAttribute("addentryform", new AddEntryForm());
     	model.addAttribute("influencers", irepository.findAll());
         return "addEntry";
     }
 	
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String save(Entry entry){
+    public String save(@Valid  @ModelAttribute("addentryform") AddEntryForm addEntryForm, BindingResult bindingResult, Model model){
+		model.addAttribute("influencers", irepository.findAll());
+		
 		// Find current user's name
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User user = urepository.findByUsername(auth.getName());
 		
-		// Add current user's id to the entry for reference
-		entry.setUserId(user.getId());
-		repository.save(entry);
+		if (!bindingResult.hasErrors()) {
+			if (addEntryForm.getDate() == null) {
+	    		bindingResult.rejectValue("date", "err.date", "Date can't be empty");    	
+				return "addEntry";	
+	    	}
+	    	
+        	Entry entry = new Entry();
+        	entry.setHeadline(addEntryForm.getHeadline());
+        	entry.setMoodRating(addEntryForm.getMoodRating());
+        	entry.setDate(addEntryForm.getDate());
+        	entry.setTime(addEntryForm.getTime());
+        	entry.setSymptom(addEntryForm.getSymptom());
+        	entry.setNotes(addEntryForm.getNotes());
+        	entry.setGratitude(addEntryForm.getGratitude());
+        	entry.setInfluencer(addEntryForm.getInfluencer());
+        	
+    		// Add current user's id to the entry for reference
+    		entry.setUserId(user.getId());
+    		repository.save(entry);
+        } else if (addEntryForm.getHeadline() == null) {
+			bindingResult.rejectValue("headline", "err.headline", "Headline can't be empty");    	
+			return "addEntry";		    		
+    	} else if (addEntryForm.getTime() == null) {
+    		bindingResult.rejectValue("time", "err.time", "Time can't be empty");    	
+			return "addEntry";	
+    	} else {
+        	return "addEntry";
+        }
+		
         return "redirect:entries";
     }
 	
-	@RequestMapping(value = "/saveedit", method = RequestMethod.POST)
-    public String saveEdit(Entry entry){
+	@RequestMapping(value = "/saveeditentry", method = RequestMethod.POST)
+    public String saveEditEntry(Entry entry){
         repository.save(entry);
         return "redirect:entries";
     }
 	
-	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
-    public String editBook(@PathVariable("id") String id, Model model) {
+	@RequestMapping(value = "/edit/entries/{id}", method = RequestMethod.GET)
+    public String editEntry(@PathVariable("id") String id, Model model) {
 		model.addAttribute("entry", repository.findById(id));
 		model.addAttribute("influencers", irepository.findAll());
         return "editEntry";
     }  
 	
-	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/delete/entries/{id}", method = RequestMethod.GET)
     public String deleteEntry(@PathVariable("id") String id, Model model) {
     	repository.deleteById(id);
-        return "redirect:../allEntries";
+        return "redirect:../../entries";
     } 
 }

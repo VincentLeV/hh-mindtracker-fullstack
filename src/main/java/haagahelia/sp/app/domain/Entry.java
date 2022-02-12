@@ -21,6 +21,7 @@ public class Entry {
 	private Integer moodRating;
 	private String symptom;
 	private String userId;
+	private String gratitude;
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date date;
@@ -42,7 +43,8 @@ public class Entry {
 		String time,
 		Influencer influencer,
 		String notes,
-		String userId
+		String userId,
+		String gratitude
 	) {
 		super();
 		this.headline = headline;
@@ -126,6 +128,15 @@ public class Entry {
 	public void setTime(String time) {
 		this.time = time;
 	}
+	
+	public String getGratitude() {
+		return gratitude;
+	}
+	
+	public void setGratitude(String gratitude) {
+		this.gratitude = gratitude;
+	}
+	
 	
 	@Override
 	public String toString() {

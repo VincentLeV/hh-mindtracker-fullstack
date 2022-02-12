@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://thymeleaf.org">
+<head>
+	<title>Entries</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+	<link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css}"/>
+</head>
+
+<body>
+	<div th:replace="fragments/navbar :: navbar"></div>
+	
+	<div class="px-5 my-3 w-75 mx-auto">
+		<table class="table table-striped">
+			<tr>
+				<th>Username</th>
+				<th>Full Name</th>
+				<th>Role</th>
+				<th></th>
+				<th></th>
+			</tr>
+				
+			<tr th:each="user: ${users}">
+				<td th:text="${user.username}" />
+				<td th:text="${user.fullname}" />
+				<td th:text="${user.role}" />
+				<td>
+					<a th:href="@{/edit/users/{id}(id=${user.id})}">
+						<button class="btn btn-warning btn-sm">Edit</button>
+					</a>
+				</td>
+				<td>
+					<a th:href="@{/delete/users/{id}(id=${user.id})}">
+						<button class="btn btn-danger btn-sm">Delete</button>
+					</a>
+				</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

@@ -9,23 +9,25 @@
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light" th:fragment="navbar">
 		<div class="container-fluid px-5">	
-			<ul class="navbar-nav me-auto mb-2 mb-lg-0" style="width: 25%;">
+			<a th:href="@{/entries}" class="navbar-brand mb-1 h1" href="/">
+          		Mind Tracker
+          	</a>
+			<ul class="navbar-nav me-auto mb-lg-0" style="width: 25%;">
+				<li class="nav-item">
+		          <a th:href="@{/entries}" class="nav-link active">Home</a>
+		        </li>
 		        <li class="nav-item">
-		          <a class="nav-link active" href="/">Mind Tracker</a>
+		          <a th:href="@{/users}" th:if="${userRole.equals('ADMIN')}" class="nav-link active">Users</a>
 		        </li>
 		     </ul>
 			     
-	     	<div style="width: 50%;" class="text-center">
+	     	<div style="width: 40%;" class="text-center">
 	     		<h5 th:inline="text">
 					Welcome, [[${#httpServletRequest.remoteUser}]]!
 				</h5>
-				
-				<button th:if="${userRole.equals('ADMIN')}" class="btn btn-info btn-sm">
-					User List
-			    </button>
 	     	</div>
 	     	
-	     	<div style="width: 25%;" class="text-end">
+	     	<div style="width: 35%;" class="text-end">
 	     		<form th:action="@{/logout}" method="post" class="nav-item">
 					<input type="submit" value="Sign Out" class="btn btn-sm btn-danger"/>
 				</form>

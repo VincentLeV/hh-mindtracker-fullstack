@@ -14,8 +14,9 @@
 
 		<h2 class="text-center mb-4">Edit Entry</h2>
 		
-		<form th:object="${entry}" th:action="@{../saveedit}" action="#" method="post" class="px-5">
+		<form th:object="${entry}" th:action="@{../../saveeditentry}" action="#" method="post" class="px-5">
 			<input type="hidden" th:field="*{id}" />
+			<input type="hidden" th:field="*{userId}" />
 			
 		  	<div class="mb-2 mx-auto w-50">
 		  		<label for="headline" class="form-label mx-auto">Headline</label>
@@ -61,6 +62,11 @@
 			<div class="mb-2 mx-auto w-50">
 				<label for="notes" class="form-label">Note</label>
 				<textarea id="notes" th:field="*{notes}" class="form-control"></textarea>
+			</div>
+			
+			<div class="mb-2 mx-auto w-50">
+				<label for="gratitude" class="form-label">Gratitude</label>
+				<input type="text" id="gratitude" th:field="*{gratitude}" placeholder="Start with 'Today I'm grateful for...'" class="form-control"> 
 			</div>
 			
 			<div class="my-3 w-50 d-grid gap-2 mx-auto">

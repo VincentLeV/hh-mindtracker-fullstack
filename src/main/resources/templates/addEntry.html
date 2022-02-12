@@ -14,10 +14,11 @@
 
 		<h2 class="text-center mb-4">Add Entry</h2>
 		
-		<form th:object="${entry}" th:action="@{save}" action="#" method="post" class="px-5">
+		<form th:object="${addentryform}" th:action="@{save}" action="#" method="post" class="px-5">
 		  	<div class="mb-2 mx-auto w-50">
 		  		<label for="headline" class="form-label mx-auto">Headline</label>
 				<input type="text" id="headline" th:field="*{headline}" class="form-control" />
+				<p th:if="${#fields.hasErrors('headline')}" th:errors="*{headline}">Headline Error</p>	
 		  	</div>
 			
 			<div class="mb-2 mx-auto w-50">
@@ -42,6 +43,14 @@
 					<input type="date" id="date" th:field="*{date}" class="form-control"> 
 					<input type="time" id="time" th:field="*{time}" class="form-control"> 
 				</div>
+				<div class="d-flex justify-content-between">
+					<div class="w-50">
+						<div th:if="${#fields.hasErrors('date')}" th:errors="*{date}" >Date Error</div>
+					</div>
+					<div  class="w-50">
+						<div th:if="${#fields.hasErrors('time')}" th:errors="*{time}">Time Error</div>
+					</div>
+				</div>
 			</div>
 			
 			<div class="mb-2 mx-auto w-50">
@@ -61,8 +70,13 @@
 				<textarea id="notes" th:field="*{notes}" class="form-control"></textarea>
 			</div>
 			
-			<div class="my-3 w-50 d-grid gap-2 mx-auto">
-				<input type="submit" value="Add" class="btn btn-success"></input>
+			<div class="mb-2 mx-auto w-50">
+				<label for="gratitude" class="form-label">Gratitude</label>
+				<input type="text" id="gratitude" th:field="*{gratitude}" placeholder="Start with 'Today I'm grateful for...'" class="form-control"> 
+			</div>
+			
+			<div class="my-3 w-50 d-grid gap-2 mx-auto d-flex align-items-center">
+				<input type="submit" value="Add" class="btn btn-success w-100"></input>
 			</div>
 		</form>
 	</section>
