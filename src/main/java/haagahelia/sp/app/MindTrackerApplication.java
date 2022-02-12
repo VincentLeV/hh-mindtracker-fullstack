@@ -15,6 +15,8 @@ import haagahelia.sp.app.domain.Entry;
 import haagahelia.sp.app.domain.EntryRepository;
 import haagahelia.sp.app.domain.Influencer;
 import haagahelia.sp.app.domain.InfluencerRepository;
+import haagahelia.sp.app.domain.UserRepository;
+import haagahelia.sp.app.domain.User;
 
 @SpringBootApplication
 public class MindTrackerApplication {
@@ -28,9 +30,9 @@ public class MindTrackerApplication {
 	}
 
 	@Bean
-	public CommandLineRunner initializeBooks(
-		EntryRepository erepository
-//		UserRepository urepository,
+	public CommandLineRunner initialize(
+		EntryRepository erepository,
+		UserRepository urepository
 //		InfluencerRepository irepository
 	) {
 		return (args) -> {
@@ -48,6 +50,11 @@ public class MindTrackerApplication {
 					irepository.save(influencer);
 				}
 			}
+			
+			if (urepository.findByUsername("admin") == null) {
+				User admin = new User("admin", "Admin", "$2a$12$dN3Bl1QOaxmXNq25UjN55enZk.q01UiWImKxe47rLKta/9Rd7R/vG", "ADMIN");
+				urepository.save(admin);
+			}		
 			
 //			erepository.save(new Entry("Good Day", 4, "Happy", irepository.findByName("Family").get(0), "01/02/2021 10:00 AM", "A good day with family");
 //			erepository.save(new Entry("A Bit Down", 3, "Anxious", irepository.findByName("Study").get(0), "01/02/2021 10:00 AM", "Too many assignments");	

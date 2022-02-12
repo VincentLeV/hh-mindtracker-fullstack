@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import haagahelia.sp.app.domain.Entry;
 import haagahelia.sp.app.domain.EntryRepository;
@@ -43,14 +42,23 @@ public class EntryController {
 //	    return (List<Entry>) repository.findAll();
 //	}
 	
-	@RequestMapping(value= {"/", "/entries"}, method=RequestMethod.GET, produces="text/html")
+	@RequestMapping(value= {"/", "/entries"}, method=RequestMethod.GET)
 	public String entries(Model model) {
 		// Find current user's id
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User user = urepository.findByUsername(auth.getName());
+		String userRole = user.getRole();
+		List<Entry> entries = null;
+		
+		if (userRole.equals("ADMIN")) {
+			// admin user can see all entries
+			entries = repository.findAll();
+		} else {
+			// only show that current user's entries
+			entries = repository.findByUserId(user.getId());
+		}
 		
 		// Find current user's entries and sort them by date
-		List<Entry> entries = repository.findByUserId(user.getId());
 		Collections.sort(entries, new EntryService.sortByDate());
 
 		// Format every entry time
@@ -70,6 +78,7 @@ public class EntryController {
 		  	entries.get(i).setTime(timeStr);
 		}
 		model.addAttribute("entries", entries);
+		model.addAttribute("userRole", userRole);
 		return "entries";
 	}
 	

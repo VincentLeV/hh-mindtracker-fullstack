@@ -19,7 +19,12 @@
 	     		<h5 th:inline="text">
 					Welcome, [[${#httpServletRequest.remoteUser}]]!
 				</h5>
+				
+				<button th:if="${userRole.equals('ADMIN')}" class="btn btn-info btn-sm">
+					User List
+			    </button>
 	     	</div>
+	     	
 	     	<div style="width: 25%;" class="text-end">
 	     		<form th:action="@{/logout}" method="post" class="nav-item">
 					<input type="submit" value="Sign Out" class="btn btn-sm btn-danger"/>
