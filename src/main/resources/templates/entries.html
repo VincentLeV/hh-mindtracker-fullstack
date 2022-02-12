@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://thymeleaf.org">
+<head>
+	<title>Entries</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+	<link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css}"/>
+</head>
+
+<body>
+	<div th:replace="fragments/navbar :: navbar"></div>
+	
+	<main class="px-3 py-2 mx-auto" style="max-width: 1000px;">
+		<a href="/add">
+			<button 
+				class="rounded-circle bg-success text-light" 
+				style="position: fixed; bottom: 8vh; right: 10vw; width: 5rem; height: 5rem; z-index: 100; border: none;"
+			>
+				Add Entry
+			</button>
+		</a>	
+		
+		<div style="display: grid; grid: auto-flow / 1fr 1fr 1fr;">
+			<div class="card mb-4 mt-2" style="min-width: 19rem; max-width: 19rem; min-height: 18rem;" th:each="entry: ${entries}">
+			  <h5 class="card-header text-uppercase" th:text="${entry.headline}"></h5>
+			  <div class="card-body pt-2 px-3">
+			  	<div class="text-muted fw-light" style="font-size: 0.9rem;">
+			  		<span th:text="${#dates.format(entry.date, 'dd-MM-yyyy')}"></span>
+			  		<span th:text="${entry.time}"></span>
+			  	</div>
+			    
+			    <div class="d-flex align-items-center mt-2 mb-3">
+				    <div th:switch="${entry.moodRating}" class="me-2">
+					  <div th:case="'5'" class="mt-1"><i class="fa-solid fa-face-laugh-beam text-primary fs-5"></i></div>
+					  <div th:case="'4'" class="mt-1"><i class="fa-solid fa-face-grin-squint text-primary fs-5"></i></div>
+					  <div th:case="'3'" class="mt-1"><i class="fa-solid fa-face-smile text-primary fs-5"></i></div>
+					  <div th:case="'2'" class="mt-1"><i class="fa-solid fa-face-meh text-primary fs-5"></i></div>
+					  <div th:case="'1'" class="mt-1"><i class="fa-solid fa-face-frown text-primary fs-5"></i></div>
+					  <div th:case="'0'" class="mt-1"><i class="fa-solid fa-face-sad-cry text-primary fs-5"></i></div>
+					</div>
+	
+				    <div th:text="${entry.symptom}"></div>
+				    <div class="mx-2"><i class="fa-solid fa-minus"></i></div>
+				    <div th:text="${entry.influencer.name}"></div>
+			    </div>
+			    
+			    <div class="mt-3 mb-4 px-2" style="max-height: 6rem; overflow-y: scroll;">
+			    	<p th:text="${entry.notes}" class="fst-italic lh-sm" style="text-align: justify;"/>
+			    </div>
+			  </div>
+			  
+			  <div class="pt-1 pb-3 ps-3 pe-1">
+			  	<div class="d-flex align-items-center justify-content-start">
+				    <div class="bg-warning d-flex align-items-center py-1 px-3 me-2 rounded" style="cursor: pointer;">
+					    <a th:href="@{/edit/{id}(id=${entry.id})}" style="color: black; text-decoration: none;">
+					    	<i class="fa-solid fa-pen-to-square"></i>
+				    		<span>Edit</span>
+						</a>
+					</div>
+					
+					<div class="bg-danger d-flex align-items-center py-1 px-3 rounded" style="cursor: pointer;">
+						<a th:href="@{/delete/{id}(id=${entry.id})}" style="color: white; text-decoration: none;">
+							<i class="fa-solid fa-trash-can text-light"></i>
+							<span>Delete</span>
+						</a>
+					</div>
+				</div>
+			  </div>
+			</div>
+		</div>
+	</main>
+
+	<script type="text/javascript" th:src="@{/js/main.js}"></script>
+</body>
+</html>

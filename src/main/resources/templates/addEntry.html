@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://thymeleaf.org">
+<head>
+	<title>Add Entry</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+</head>
+
+<body>
+	<section class="mt-4">
+		<div class="mt-2 mb-3 mx-auto w-25 text-center">
+			<a href="/"><button class="btn btn-warning btn-sm">Back</button></a>
+		</div>
+
+		<h2 class="text-center mb-4">Add Entry</h2>
+		
+		<form th:object="${entry}" th:action="@{save}" action="#" method="post" class="px-5">
+		  	<div class="mb-2 mx-auto w-50">
+		  		<label for="headline" class="form-label mx-auto">Headline</label>
+				<input type="text" id="headline" th:field="*{headline}" class="form-control" />
+		  	</div>
+			
+			<div class="mb-2 mx-auto w-50">
+				<label for="moodRating" class="form-label">Mood Rating (0-5)</label>
+				<input type="range"  th:field="*{moodRating}" class="form-range" min="0" max="5" id="moodRating">
+			</div>
+			
+			<div class="mb-2 mx-auto w-50">
+		  		<label for="symptom" class="form-label">Symptoms</label>
+				<input 
+					type="text" 
+					id="symptom" 
+					placeholder="Happy, Sad, Anxious, Stress..."
+					th:field="*{symptom}" 
+					class="form-control" 
+				/>
+			</div>
+			
+			<div class="my-3 mx-auto w-50">
+				<label class="form-label">Date & Time</label>
+				<div class="input-group">
+					<input type="date" id="date" th:field="*{date}" class="form-control"> 
+					<input type="time" id="time" th:field="*{time}" class="form-control"> 
+				</div>
+			</div>
+			
+			<div class="mb-2 mx-auto w-50">
+				<label for="influencers" class="form-label">Influencer</label> 
+				<select id="influencers" th:field="*{influencer}" class="form-control"> 
+					<option 
+						th:each="influencer: ${influencers}" 
+						th:value="${influencer.id}" 
+						th:text="${influencer.name}"
+					>
+					</option>
+				</select>
+			</div>
+			
+			<div class="mb-2 mx-auto w-50">
+				<label for="notes" class="form-label">Note</label>
+				<textarea id="notes" th:field="*{notes}" class="form-control"></textarea>
+			</div>
+			
+			<div class="my-3 w-50 d-grid gap-2 mx-auto">
+				<input type="submit" value="Add" class="btn btn-success"></input>
+			</div>
+		</form>
+	</section>
+	
+	<script type="text/javascript" th:src="@{/js/main.js}"></script>
+</body>
+</html>
