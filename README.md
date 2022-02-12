@@ -67,8 +67,8 @@ The project is created for Server Programming course at Haaga-Helia University o
 </p>
 
 ## Demo
-<a href="https://hh-mindtracker-fullstack.herokuapp.com/login" target="_blank">
-    <p align="center">https://hh-mindtracker-fullstack.herokuapp.com/login</p>
+<a href="https://hh-mindtracker-fullstack.herokuapp.com" target="_blank">
+    <p align="center">https://hh-mindtracker-fullstack.herokuapp.com</p>
 </a>
 
 <p align="center">
